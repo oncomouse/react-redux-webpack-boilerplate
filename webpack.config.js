@@ -4,14 +4,11 @@ const url = require('url');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const noop = require('noop-webpack-plugin');
 
 // Read in package.json:
-const packageJSON = JSON.parse(
-  fs.readFileSync(
-    path.join('.', 'package.json')
-  )
-);
+const packageJSON = JSON.parse(fs.readFileSync(path.join('.', 'package.json')));
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
@@ -20,218 +17,250 @@ const isProd = nodeEnv === 'production';
 const PUBLIC_URL = process.env.PUBLIC_URL || (
   isProd
   && Object.prototype.hasOwnProperty.call(packageJSON, 'homepage')
-) ? packageJSON['homepage'] : undefined;
+) ? packageJSON.homepage : undefined;
 // Extract APP_TITLE from package.json:
 const APP_TITLE = (
   Object.prototype.hasOwnProperty.call(packageJSON, 'title')
-) ? packageJSON['title'] : 'My Sample App';
+) ? packageJSON.title : 'My Sample App';
 const publicPath = PUBLIC_URL ? url.parse(PUBLIC_URL).pathname : '';
 
-var webpackConfig = {
+const postCSSplugins = () => [
+  require('autoprefixer')({ browsers: 'last 3 versions' }), // eslint-disable-line global-require
+  require('postcss-easings'), // eslint-disable-line global-require
+  require('css-mqpacker'), // eslint-disable-line global-require
+  require('postcss-clearfix'), // eslint-disable-line global-require
+];
+
+const webpackConfig = {
   mode: isProd ? 'production' : 'development',
   devtool: isProd
     ? 'hidden-source-map'
     : 'cheap-module-source-map',
   entry: {
     js: [
-      'index'
-    ]
-  }
-  , output: {
-    path: path.resolve('./build/')
-    , filename: 'bundle.js'
-    , publicPath
-  }
-  , module: {
+      'index',
+    ],
+  },
+  output: {
+    path: path.resolve('./build/'),
+    filename: 'bundle.js',
+    publicPath,
+  },
+  module: {
     rules: [
       {
-        test: /\.(jsx|js)$/
-        , exclude: /(node_modules|bower_components)/
-        , use: [
+        test: /\.(jsx|js)$/,
+        exclude: /(node_modules|bower_components)/,
+        use: [
           {
-            loader: 'babel-loader'
-            , options: {
-              cacheDirectory: true
-            }
-          }
-        ]
-      }
-      /*
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+            },
+          },
+        ],
+      }, /*
         CSS loader for the module files (in
         app/stylesheets/components). These are intended to be
         styles for individual React components, which will have a
         unique name space.
       */
-      , {
-        test: /\.css$/
-        , exclude: /global\.css$/
-        , use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
-          fallback: 'style-loader'
-          , use: [
+      {
+        test: /\.css$/,
+        exclude: /global\.css$/,
+        use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
             {
               /* CSS Modules Code */
-              loader: 'css-loader'
-              , options: {
-                modules: true
-                , importLoaders: 0
-                , localIdentName: '[name]__[local]___[hash:base64:5]'
-              }
-            }
-          ]
-        }))
-      }
-      /*
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                importLoaders: 1,
+                localIdentName: '[name]__[local]___[hash:base64:5]',
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: postCSSplugins,
+              },
+            },
+          ],
+        })),
+      }, /*
       Loader code for a universal SCSS file. These styles will
       be (as long as you remember to import them into
       app/index.js) loaded for every component and are not
       uniquely namespaced as the module SCSS code above is.
       This file lives in app/stylesheets/global.scss.
        */
-      , {
-        test: /\.css$/
-        , include: /global\.css$/
-        , use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
-          fallback: 'style-loader'
-          , use: [
-            'css-loader'
-          ]
-        }))
-      }
-      /*
+      {
+        test: /\.css$/,
+        include: /global\.css$/,
+        use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              /* CSS Modules Code */
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: postCSSplugins,
+              },
+            },
+          ],
+        })),
+      }, /*
         SASS loader code for the module files (in
         app/stylesheets/components). These are intended to be
         styles for individual React components, which will have a
         unique name space.
       */
-      , {
-        test: /\.scss$/
-        , exclude: /global\.scss$/
-        , use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
-          fallback: 'style-loader'
-          , use: [
+      {
+        test: /\.scss$/,
+        exclude: /global\.scss$/,
+        use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
             {
               /* CSS Modules Code */
-              loader: 'css-loader'
-              , options: {
-                modules: true
-                , importLoaders: 1
-                , localIdentName: '[name]__[local]___[hash:base64:5]'
-              }
-            }
-            , 'sass-loader'
-          ]
-        }))
-      }
-      /*
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                importLoaders: 2,
+                localIdentName: '[name]__[local]___[hash:base64:5]',
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: postCSSplugins,
+              },
+            },
+            'sass-loader',
+          ],
+        })),
+      }, /*
         Loader code for a universal SCSS file. These styles will
         be (as long as you remember to import them into
         app/index.js) loaded for every component and are not
         uniquely namespaced as the module SCSS code above is.
         This file lives in app/stylesheets/global.scss.
       */
-      , {
-        test: /\.scss$/
-        , include: /global\.scss$/
-        , use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
-          fallback: 'style-loader'
-          , use: [
+      {
+        test: /\.scss$/,
+        include: /global\.scss$/,
+        use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
             {
               /* CSS Modules Code */
-              loader: 'css-loader'
-              , options: {
-                modules: false
-                , importLoaders: 1
-              }
-            }
-            , 'sass-loader'
-          ]
-        }))
-      }
-    ]
-  }
-  , plugins: [
+              loader: 'css-loader',
+              options: {
+                importLoaders: 2,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: postCSSplugins,
+              },
+            },
+            'sass-loader',
+          ],
+        })),
+      },
+    ],
+  },
+  plugins: [
     // Generate style.css file:
     new ExtractTextPlugin({
-      filename: 'style.css'
-      , allChunks: true
-    })
+      filename: 'style.css',
+      allChunks: true,
+    }),
     // Build the HTML file without having to include it in the app:
-    , new HtmlWebpackPlugin({
+    new HtmlWebpackPlugin({
       files: {
-        css: isProd ? ['style.css'] : []
-        , js: ['bundle.js']
-      }
-      , title: APP_TITLE
-      , template: path.join('.','app','template','index.ejs')
-      , chunksSortMode: 'dependency'
-      , chunks: {
+        css: isProd ? ['style.css'] : [],
+        js: ['bundle.js'],
+      },
+      title: APP_TITLE,
+      template: path.join('.', 'app', 'template', 'index.ejs'),
+      chunksSortMode: 'dependency',
+      chunks: {
         head: {
-          css: isProd ? ['style.css'] : []
-        }
-        , main: {
-          entry: ['bundle.js']
-        }
-      }
-    })
+          css: isProd ? ['style.css'] : [],
+        },
+        main: {
+          entry: ['bundle.js'],
+        },
+      },
+    }),
     // Enable HMR:
-    , isProd ? noop() : new webpack.HotModuleReplacementPlugin()
+    isProd ? noop() : new webpack.HotModuleReplacementPlugin(),
     // Configure SASS:
-    , new webpack.LoaderOptionsPlugin({
-      test: /\.scss$/
-      , options: {
-        context: __dirname
-        , sassLoader: {
+    new webpack.LoaderOptionsPlugin({
+      test: /\.scss$/,
+      options: {
+        context: __dirname,
+        sassLoader: {
           includePaths: [
-            './node_modules'
-            , './bower_components'
-            , './app/stylesheets'
-          ]
-        }
-      }
-    })
+            './node_modules',
+            './bower_components',
+            './app/stylesheets',
+          ],
+        },
+      },
+    }),
     // Define global variables:
-    , new webpack.DefinePlugin({
+    new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(nodeEnv)
-      }
-      , 'APP_TITLE': JSON.stringify(APP_TITLE)
-      , PUBLIC_URL: JSON.stringify(PUBLIC_URL)
-    })
+        NODE_ENV: JSON.stringify(nodeEnv),
+      },
+      APP_TITLE: JSON.stringify(APP_TITLE),
+      PUBLIC_URL: JSON.stringify(PUBLIC_URL),
+    }),
     // Optimization & Build Plugins:
-    , isProd ? new UglifyJSPlugin({
+    isProd ? new UglifyJSPlugin({
       uglifyOptions: {
         compress: {
-          warnings: false
-        }
-        , output: {
-          comments: false
-        }
-      }
-      , sourceMap: false
-    }) : noop()
-    , isProd ? new webpack.optimize.AggressiveMergingPlugin() : noop()
-    , isProd ? new webpack.optimize.OccurrenceOrderPlugin : noop()
-  ]
-  // Recommended Webpack optimizations:
-  , optimization: {
-    noEmitOnErrors: !isProd
-    , concatenateModules: isProd
-    , namedModules: !isProd
-  }
-  , resolve: {
+          warnings: false,
+        },
+        output: {
+          comments: false,
+        },
+      },
+      sourceMap: false,
+    }) : noop(),
+    isProd ? new webpack.optimize.AggressiveMergingPlugin() : noop(),
+    isProd ? new webpack.optimize.OccurrenceOrderPlugin() : noop(),
+  ],
+  // Recommended Webpack optimizations:,
+  optimization: {
+    noEmitOnErrors: !isProd,
+    concatenateModules: isProd,
+    namedModules: !isProd,
+  },
+  resolve: {
     extensions: [
-      '.js', '.jsx'
-    ]
-    , modules: [
-      path.resolve('./app/')
-      , path.resolve('./node_modules')
-    ]
-  }
-  , devServer: {
-    contentBase: './app'
-    , noInfo: false
-    , hot: true
-  }
+      '.js', '.jsx',
+    ],
+    modules: [
+      path.resolve('./app/'),
+      path.resolve('./node_modules'),
+    ],
+  },
+  devServer: {
+    contentBase: './app',
+    noInfo: false,
+    hot: true,
+  },
 };
 
-  module.exports = webpackConfig;
+module.exports = webpackConfig;
