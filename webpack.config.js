@@ -3,7 +3,8 @@ const fs = require('fs');
 const url = require('url');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const noop = require('noop-webpack-plugin');
 
@@ -45,6 +46,7 @@ const webpackConfig = {
     path: path.resolve('./build/'),
     filename: 'bundle.js',
     publicPath,
+    libraryTarget: isProd ? 'umd' : 'var'
   },
   module: {
     rules: [
@@ -68,26 +70,24 @@ const webpackConfig = {
       {
         test: /\.css$/,
         exclude: /global\.css$/,
-        use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              /* CSS Modules Code */
-              loader: 'css-loader',
-              options: {
-                modules: true,
-                importLoaders: 1,
-                localIdentName: '[name]__[local]___[hash:base64:5]',
-              },
+        use: [
+          isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+          {
+            /* CSS Modules Code */
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              importLoaders: 1,
+              localIdentName: '[name]__[local]___[hash:base64:5]',
             },
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: postCSSplugins,
-              },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: postCSSplugins,
             },
-          ],
-        })),
+          },
+        ],
       }, /*
       Loader code for a universal SCSS file. These styles will
       be (as long as you remember to import them into
@@ -98,24 +98,22 @@ const webpackConfig = {
       {
         test: /\.css$/,
         include: /global\.css$/,
-        use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              /* CSS Modules Code */
-              loader: 'css-loader',
-              options: {
-                importLoaders: 1,
-              },
+        use: [
+          isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+          {
+            /* CSS Modules Code */
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
             },
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: postCSSplugins,
-              },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: postCSSplugins,
             },
-          ],
-        })),
+          },
+        ],
       }, /*
         SASS loader code for the module files (in
         app/stylesheets/components). These are intended to be
@@ -125,27 +123,25 @@ const webpackConfig = {
       {
         test: /\.scss$/,
         exclude: /global\.scss$/,
-        use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              /* CSS Modules Code */
-              loader: 'css-loader',
-              options: {
-                modules: true,
-                importLoaders: 2,
-                localIdentName: '[name]__[local]___[hash:base64:5]',
-              },
+        use: [
+          isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+          {
+            /* CSS Modules Code */
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              importLoaders: 2,
+              localIdentName: '[name]__[local]___[hash:base64:5]',
             },
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: postCSSplugins,
-              },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: postCSSplugins,
             },
-            'sass-loader',
-          ],
-        })),
+          },
+          'sass-loader',
+        ],
       }, /*
         Loader code for a universal SCSS file. These styles will
         be (as long as you remember to import them into
@@ -156,51 +152,38 @@ const webpackConfig = {
       {
         test: /\.scss$/,
         include: /global\.scss$/,
-        use: ['extracted-loader'].concat(ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              /* CSS Modules Code */
-              loader: 'css-loader',
-              options: {
-                importLoaders: 2,
-              },
+        use: [
+          isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+          {
+            /* CSS Modules Code */
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
             },
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: postCSSplugins,
-              },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: postCSSplugins,
             },
-            'sass-loader',
-          ],
-        })),
+          },
+          'sass-loader',
+        ],
       },
     ],
   },
   plugins: [
-    // Generate style.css file:
-    new ExtractTextPlugin({
-      filename: 'style.css',
-      allChunks: true,
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: isProd ? '[name].[hash].css' : '[name].css',
+      chunkFilename: isProd ? '[id].[hash].css' : '[id].css',
     }),
     // Build the HTML file without having to include it in the app:
     new HtmlWebpackPlugin({
-      files: {
-        css: isProd ? ['style.css'] : [],
-        js: ['bundle.js'],
-      },
       title: APP_TITLE,
-      template: path.join('.', 'app', 'template', 'index.ejs'),
+      template: path.join('.', 'app', 'template', 'index.html'),
       chunksSortMode: 'dependency',
-      chunks: {
-        head: {
-          css: isProd ? ['style.css'] : [],
-        },
-        main: {
-          entry: ['bundle.js'],
-        },
-      },
     }),
     // Enable HMR:
     isProd ? noop() : new webpack.HotModuleReplacementPlugin(),
@@ -227,17 +210,6 @@ const webpackConfig = {
       PUBLIC_URL: JSON.stringify(PUBLIC_URL),
     }),
     // Optimization & Build Plugins:
-    isProd ? new UglifyJSPlugin({
-      uglifyOptions: {
-        compress: {
-          warnings: false,
-        },
-        output: {
-          comments: false,
-        },
-      },
-      sourceMap: false,
-    }) : noop(),
     isProd ? new webpack.optimize.AggressiveMergingPlugin() : noop(),
     isProd ? new webpack.optimize.OccurrenceOrderPlugin() : noop(),
   ],
@@ -246,6 +218,31 @@ const webpackConfig = {
     noEmitOnErrors: !isProd,
     concatenateModules: isProd,
     namedModules: !isProd,
+    minimizer: [
+      new UglifyJSPlugin({
+        uglifyOptions: {
+          compress: {
+            warnings: false,
+          },
+          output: {
+            comments: false,
+          },
+        },
+        sourceMap: false,
+        parallel: true
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ],
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true
+        }
+      }
+    }
   },
   resolve: {
     extensions: [
