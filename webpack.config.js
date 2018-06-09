@@ -44,7 +44,7 @@ const webpackConfig = {
   },
   output: {
     path: path.resolve('./build/'),
-    filename: 'bundle.js',
+    filename: 'bundle.[hash].js',
     publicPath,
     libraryTarget: isProd ? 'umd' : 'var'
   },
