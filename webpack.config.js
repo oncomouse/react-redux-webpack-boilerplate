@@ -44,7 +44,7 @@ const webpackConfig = {
   },
   output: {
     path: path.resolve('./build/'),
-    filename: 'bundle.[hash].js',
+    filename: isProd ? 'bundle.[hash].js' : 'bundle.js',
     publicPath,
     libraryTarget: isProd ? 'umd' : 'var'
   },
@@ -229,6 +229,7 @@ const webpackConfig = {
         uglifyOptions: {
           compress: {
             warnings: false,
+            inline: false,
           },
           output: {
             comments: false,
