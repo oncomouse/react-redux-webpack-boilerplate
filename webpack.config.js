@@ -184,6 +184,12 @@ const webpackConfig = {
       title: APP_TITLE,
       template: path.join('.', 'app', 'template', 'index.html'),
       chunksSortMode: 'dependency',
+      minify: {
+        collapseWhitespace: isProd,
+        collapseInlineTagWhitespace: isProd,
+        removeComments: isProd,
+        removeRedundantAttributes: isProd
+      }
     }),
     // Enable HMR:
     isProd ? noop() : new webpack.HotModuleReplacementPlugin(),
