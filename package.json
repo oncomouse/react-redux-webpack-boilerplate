@@ -8,10 +8,10 @@
   },
   "main": "app/index.jsx",
   "title": "My React-Redux App",
-  "homepage": "https://oncomouse.github.io/react-redux-app/",
+  "homepage": "https://oncomouse.github.io/",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "cross-env NODE_ENV=production webpack",
+    "build": "cross-env BABEL_ENV=production NODE_ENV=production webpack",
     "lint": "npm-run-all \"lint:* -- {@}\" --",
     "lint:js": "eslint --ext .js --ext .jsx app/",
     "lint:css": "stylelint \"app/stylesheets/**/*.scss\" --cache --cache-location \"./.stylelintcache\"",
@@ -25,6 +25,7 @@
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
+    "babel-plugin-polished": "^1.1.0",
     "babel-plugin-ramda": "^1.2.0",
     "babel-plugin-styled-components": "^1.5.1",
     "babel-plugin-tailcall-optimization": "^1.0.11",

@@ -11,24 +11,37 @@
 		"react",
 		"stage-2"
 	],
-	"plugins": [
-		"styled-components",
-		"tailcall-optimization"
-	],
 	"env": {
+		"development": {
+			"plugins": [
+				"styled-components",
+				"tailcall-optimization"
+			],	
+		},
+		"production": {
+			"plugins": [
+				["styled-components", {
+					"ssr": true
+				}],
+				"polished",
+				"tailcall-optimization"
+			],
+		},
 		"test": {
 			"presets": [
-				["env",{
+				["env", {
 					"targets": {
 						"node": "current",
 						"browsers": "> 5%"
 					},
 					"useBuiltIns": true
-				}]
-				, "react"
-				, "stage-2"
+				}], "react", "stage-2"
+			],
+			"plugins": [
+				"styled-components",
+				"tailcall-optimization",
+				"add-module-exports"
 			]
-			, "plugins": ["styled-components", "add-module-exports"]
 		}
 	}
 }
