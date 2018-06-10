@@ -25,8 +25,9 @@ const configureStore = () => {
   // HMR:
   if (module.hot) {
     module.hot.accept('../ducks/index', () => {
-      // eslint-disable-next-line global-require
-      store.replaceReducer(persistCombineReducers(require('../ducks/index').default));
+      import('../ducks/index').then((x) => {
+        store.replaceReducer(persistCombineReducers(persistConfig, x.default));
+      });
     });
   }
   return {

@@ -24,6 +24,7 @@ const render = (Component) => {
 };
 render(App);
 if (module.hot) {
-  // eslint-disable-next-line global-require
-  module.hot.accept(['containers/App'], () => render(require('./containers/App').default));
+  module.hot.accept(['containers/App'], () => {
+    import('containers/App').then(x => render(x.default));
+  });
 }
