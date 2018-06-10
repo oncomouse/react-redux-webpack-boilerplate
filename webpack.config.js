@@ -240,6 +240,7 @@ const webpackConfig = {
       }),
       new OptimizeCSSAssetsPlugin({})
     ],
+    // Load all CSS files into one file:
     splitChunks: {
       cacheGroups: {
         styles: {
