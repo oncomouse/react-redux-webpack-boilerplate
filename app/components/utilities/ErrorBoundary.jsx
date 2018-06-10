@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import RedBox from 'redbox-react';
 import { equals } from 'ramda';
-import Noop from './Noop';
 
 class ErrorBoundary extends React.Component {
     static propTypes = {
@@ -35,4 +34,4 @@ class ErrorBoundary extends React.Component {
     }
 }
 
-export default process.env.NODE_ENV !== 'production' ? ErrorBoundary : Noop;
+export default ErrorBoundary;

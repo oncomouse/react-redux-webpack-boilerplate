@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import configureStore from './store/configureStore';
-import ErrorBoundary from './components/utilities/ErrorBoundary';
 import App from './containers/App';
 import './stylesheets/global.scss';
 
 const { store, persistor } = configureStore();
+
+const ErrorBoundary = process.env.NODE_ENV === 'production' ? require('./components/utilities/Noop').default : require('./components/utilities/ErrorBoundary').default;
 
 // This seems like an extra step, but it lets us reload on HMR:
 const render = (Component) => {
