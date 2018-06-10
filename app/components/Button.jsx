@@ -21,7 +21,11 @@ const Element = styled.button`
 const Button = ({
   action, children, color, backgroundColor,
 }) => (
-  <Element color={color} backgroundColor={backgroundColor} onClick={action}>
+  <Element
+    color={color}
+    backgroundColor={backgroundColor}
+    onClick={action}
+  >
     {children}
   </Element>);
 Button.propTypes = {
