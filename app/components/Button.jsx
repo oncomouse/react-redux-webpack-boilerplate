@@ -1,17 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from '../stylesheets/components/Buttons.scss';
+import styled from 'styled-components';
 
-const Button = ({ action, children }) => (
-  <button className={styles.button} onClick={action}>
+const Element = styled.button`
+  background: ${props => props.color};
+  border: 1px solid ${props => props.backgroundColor};
+  color: ${props => props.backgroundColor};
+  padding: 10px 30px;
+  margin: 0 10px;
+  outline: none;
+  cursor: pointer;
+  border-radius: 5px;
+
+  &:hover {
+    color: ${props => props.color};
+    background-color: ${props => props.backgroundColor};
+  }
+`
+
+const Button = ({ action, children, color, backgroundColor }) => (
+  <Element color={color} backgroundColor={backgroundColor} onClick={action}>
     {children}
-  </button>);
+  </Element>);
 Button.propTypes = {
   action: PropTypes.func.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
+  color: PropTypes.string,
+};
+Button.defaultProps = {
+  backgroundColor: '#673AB7',
+  color: '#FFF',
 };
 Button.displayName = 'Button';
 

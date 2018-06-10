@@ -2,9 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import { injectGlobal } from 'styled-components';
+import { normalize } from 'polished';
 import configureStore from './store/configureStore';
 import App from './containers/App';
-import './stylesheets/global.scss';
+
+injectGlobal`${normalize()}`
 
 const { store, persistor } = configureStore();
 

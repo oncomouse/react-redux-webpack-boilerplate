@@ -3,8 +3,6 @@ const fs = require('fs');
 const url = require('url');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const noop = require('noop-webpack-plugin');
 
@@ -24,13 +22,6 @@ const APP_TITLE = (
   Object.prototype.hasOwnProperty.call(packageJSON, 'title')
 ) ? packageJSON.title : 'My Sample App';
 const publicPath = PUBLIC_URL ? url.parse(PUBLIC_URL).pathname : '';
-
-const postCSSplugins = () => [
-  require('autoprefixer')({ browsers: 'last 3 versions' }), // eslint-disable-line global-require
-  require('postcss-easings'), // eslint-disable-line global-require
-  require('css-mqpacker'), // eslint-disable-line global-require
-  require('postcss-clearfix'), // eslint-disable-line global-require
-];
 
 const webpackConfig = {
   mode: isProd ? 'production' : 'development',
@@ -61,124 +52,10 @@ const webpackConfig = {
             },
           },
         ],
-      }, /*
-        CSS loader for the module files (in
-        app/stylesheets/components). These are intended to be
-        styles for individual React components, which will have a
-        unique name space.
-      */
-      {
-        test: /\.css$/,
-        exclude: /global\.css$/,
-        use: [
-          isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-          {
-            /* CSS Modules Code */
-            loader: 'css-loader',
-            options: {
-              modules: true,
-              importLoaders: 1,
-              localIdentName: '[name]__[local]___[hash:base64:5]',
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: postCSSplugins,
-            },
-          },
-        ],
-      }, /*
-      Loader code for a universal SCSS file. These styles will
-      be (as long as you remember to import them into
-      app/index.js) loaded for every component and are not
-      uniquely namespaced as the module SCSS code above is.
-      This file lives in app/stylesheets/global.scss.
-       */
-      {
-        test: /\.css$/,
-        include: /global\.css$/,
-        use: [
-          isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-          {
-            /* CSS Modules Code */
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: postCSSplugins,
-            },
-          },
-        ],
-      }, /*
-        SASS loader code for the module files (in
-        app/stylesheets/components). These are intended to be
-        styles for individual React components, which will have a
-        unique name space.
-      */
-      {
-        test: /\.scss$/,
-        exclude: /global\.scss$/,
-        use: [
-          isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-          {
-            /* CSS Modules Code */
-            loader: 'css-loader',
-            options: {
-              modules: true,
-              importLoaders: 2,
-              localIdentName: '[name]__[local]___[hash:base64:5]',
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: postCSSplugins,
-            },
-          },
-          'sass-loader',
-        ],
-      }, /*
-        Loader code for a universal SCSS file. These styles will
-        be (as long as you remember to import them into
-        app/index.js) loaded for every component and are not
-        uniquely namespaced as the module SCSS code above is.
-        This file lives in app/stylesheets/global.scss.
-      */
-      {
-        test: /\.scss$/,
-        include: /global\.scss$/,
-        use: [
-          isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-          {
-            /* CSS Modules Code */
-            loader: 'css-loader',
-            options: {
-              importLoaders: 2,
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: postCSSplugins,
-            },
-          },
-          'sass-loader',
-        ],
       },
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: isProd ? '[name].[hash].css' : '[name].css',
-      chunkFilename: isProd ? '[id].[hash].css' : '[id].css',
-    }),
     // Build the HTML file without having to include it in the app:
     new HtmlWebpackPlugin({
       title: APP_TITLE,
@@ -193,20 +70,6 @@ const webpackConfig = {
     }),
     // Enable HMR:
     isProd ? noop() : new webpack.HotModuleReplacementPlugin(),
-    // Configure SASS:
-    new webpack.LoaderOptionsPlugin({
-      test: /\.scss$/,
-      options: {
-        context: __dirname,
-        sassLoader: {
-          includePaths: [
-            './node_modules',
-            './bower_components',
-            './app/stylesheets',
-          ],
-        },
-      },
-    }),
     // Define global variables:
     new webpack.DefinePlugin({
       'process.env': {
@@ -238,19 +101,7 @@ const webpackConfig = {
         sourceMap: false,
         parallel: true
       }),
-      new OptimizeCSSAssetsPlugin({})
     ],
-    // Load all CSS files into one file:
-    splitChunks: {
-      cacheGroups: {
-        styles: {
-          name: 'styles',
-          test: /\.css$/,
-          chunks: 'all',
-          enforce: true
-        }
-      }
-    }
   },
   resolve: {
     extensions: [

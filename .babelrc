@@ -12,6 +12,7 @@
 		"stage-2"
 	],
 	"plugins": [
+		"styled-components",
 		"tailcall-optimization"
 	],
 	"env": {
@@ -27,7 +28,7 @@
 				, "react"
 				, "stage-2"
 			]
-			, "plugins": ["add-module-exports"]
+			, "plugins": ["styled-components", "add-module-exports"]
 		}
 	}
 }
