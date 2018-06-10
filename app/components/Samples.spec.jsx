@@ -28,7 +28,7 @@ describe('<Samples/>', () => {
     expect(wrapper.is('Samples')).to.equal(true);
   });
   it('should render a div as the first child', () => {
-    expect(wrapper.childAt(0).name()).to.equal('ul');
+    expect(wrapper.childAt(0).name()).to.equal('Samples__List');
   });
   it('should render an object of random strings as <li>', () => {
     const samples = [];
