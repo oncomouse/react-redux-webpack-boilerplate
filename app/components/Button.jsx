@@ -16,9 +16,11 @@ const Element = styled.button`
     color: ${props => props.color};
     background-color: ${props => props.backgroundColor};
   }
-`
+`;
 
-const Button = ({ action, children, color, backgroundColor }) => (
+const Button = ({
+  action, children, color, backgroundColor,
+}) => (
   <Element color={color} backgroundColor={backgroundColor} onClick={action}>
     {children}
   </Element>);
@@ -29,6 +31,7 @@ Button.propTypes = {
     PropTypes.node,
   ]).isRequired,
   color: PropTypes.string,
+  backgroundColor: PropTypes.string,
 };
 Button.defaultProps = {
   backgroundColor: '#673AB7',

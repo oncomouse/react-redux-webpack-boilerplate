@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const List = styled.ul`
   list-style: none;
-`
+`;
 
 // If two samples have the same value, an error will occur:
 const makeKey = key => `${key}-${Math.random()}`;

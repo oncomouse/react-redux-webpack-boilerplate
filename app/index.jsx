@@ -7,7 +7,7 @@ import { normalize } from 'polished';
 import configureStore from './store/configureStore';
 import App from './containers/App';
 
-injectGlobal`${normalize()}`
+injectGlobal`${normalize()}`;
 
 const { store, persistor } = configureStore();
 
