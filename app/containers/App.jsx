@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { ThemeProvider } from 'styled-components';
+import theme from './theme';
 import Button from '../components/Button';
 import Samples from '../components/Samples';
 import { addSampleAction, resetAction } from '../ducks/Samples';
@@ -29,11 +31,13 @@ class App extends React.Component {
     }
     render() {
       return (
-        <div>
-          <Samples samples={this.props.samples} />
-          <Button action={this.addSample}>Click Me</Button>
-          <Button action={this.resetSamples}>Reset List</Button>
-        </div>
+        <ThemeProvider theme={theme}>
+          <div>
+            <Samples samples={this.props.samples} />
+            <Button onClick={this.addSample}>Click Me</Button>
+            <Button onClick={this.resetSamples}>Reset List</Button>
+          </div>
+        </ThemeProvider>
       );
     }
 }

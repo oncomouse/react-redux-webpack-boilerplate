@@ -1,45 +1,37 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { color, space, themeGet } from 'styled-system';
+import themeValueOrProp from '../utilities/themeValueOrProp';
 
-const Element = styled.button`
-  background: ${props => props.color};
-  border: 1px solid ${props => props.backgroundColor};
-  color: ${props => props.backgroundColor};
-  padding: 10px 30px;
-  margin: 0 10px;
-  outline: none;
+const Button = styled.button`
+  ${color};
+  ${space};
+  border: 1px solid ${themeValueOrProp('colors', 'color')};
+  border-radius: ${themeGet('space.1')}px;
   cursor: pointer;
-  border-radius: 5px;
+  outline: none;
 
   &:hover {
-    color: ${props => props.color};
-    background-color: ${props => props.backgroundColor};
+    background-color: ${themeValueOrProp('colors', 'color')};
+    color: ${themeValueOrProp('colors', 'bg')};
   }
 `;
-
-const Button = ({
-  action, children, color, backgroundColor,
-}) => (
-  <Element
-    color={color}
-    backgroundColor={backgroundColor}
-    onClick={action}
-  >
-    {children}
-  </Element>);
 Button.propTypes = {
-  action: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
-  color: PropTypes.string,
-  backgroundColor: PropTypes.string,
+  ...color.propTypes,
+  ...space.propTypes,
 };
 Button.defaultProps = {
-  backgroundColor: '#673AB7',
-  color: '#FFF',
+  color: 'buttonColor',
+  bg: 'buttonBgColor',
+  my: 0,
+  mx: 2,
+  py: 2,
+  px: 4,
 };
 Button.displayName = 'Button';
 
