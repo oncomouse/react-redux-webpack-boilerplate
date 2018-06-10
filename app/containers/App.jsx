@@ -31,8 +31,8 @@ class App extends React.Component {
       return (
         <div>
           <Samples samples={this.props.samples} />
-            <Button action={this.addSample}>Click Me</Button>
-              <Button action={this.resetSamples}>Reset List</Button>
+          <Button action={this.addSample}>Click Me</Button>
+          <Button action={this.resetSamples}>Reset List</Button>
         </div>
       );
     }
