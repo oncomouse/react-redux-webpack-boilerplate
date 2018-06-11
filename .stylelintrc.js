@@ -4,6 +4,7 @@ module.exports = {
     "stylelint-order"
   ],
   "rules": {
+    "no-missing-end-of-source-newline": 2,
     "indentation": 2,
     "number-leading-zero": "never",
     "string-quotes": "double",
