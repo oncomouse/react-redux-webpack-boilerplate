@@ -13,14 +13,6 @@ config.module = {
 		  , loader: 'istanbul-instrumenter-loader'
 	  }: {}
 		, {
-			test: /\.scss$/
-			, use: ['style-loader', 'css-loader?modules', 'sass-loader']
-		}
-		, {
-			test: /\.css$/
-			, use: ['style-loader', 'css-loader?modules']
-		}
-		, {
 			test: /\.(js|jsx)$/
 			, use: [
 				{
