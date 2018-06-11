@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { color, space, borders, borderColor, borderRadius, themeGet } from 'styled-system';
+import { color, space, borders, borderColor, borderRadius } from 'styled-system';
 import themeValueOrProp from '../utilities/themeValueOrProp';
 
 const Button = styled.button`
@@ -38,7 +38,7 @@ Button.defaultProps = {
   px: 4,
   border: '1px solid',
   borderRadius: 1,
-  borderColor: 'buttonColor'
+  borderColor: 'buttonColor',
 };
 Button.displayName = 'Button';
 
