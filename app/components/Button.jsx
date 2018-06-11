@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { color, space, themeGet } from 'styled-system';
+import { color, space, borders, borderColor, borderRadius, themeGet } from 'styled-system';
 import themeValueOrProp from '../utilities/themeValueOrProp';
 
 const Button = styled.button`
   ${color};
   ${space};
-  border: 1px solid ${themeValueOrProp('colors', 'color')};
-  border-radius: ${themeGet('space.1')}px;
+  ${borders};
+  ${borderRadius};
+  ${borderColor};
   cursor: pointer;
   outline: none;
 
@@ -24,6 +25,9 @@ Button.propTypes = {
   ]).isRequired,
   ...color.propTypes,
   ...space.propTypes,
+  ...borders.propTypes,
+  ...borderRadius.propTypes,
+  ...borderColor.propTypes,
 };
 Button.defaultProps = {
   color: 'buttonColor',
@@ -32,6 +36,9 @@ Button.defaultProps = {
   mx: 2,
   py: 2,
   px: 4,
+  border: '1px solid',
+  borderRadius: 1,
+  borderColor: 'buttonColor'
 };
 Button.displayName = 'Button';
 
