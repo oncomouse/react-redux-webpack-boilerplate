@@ -7,6 +7,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const noop = require('noop-webpack-plugin');
+// For historyApiFallback:
+const history = require('connect-history-api-fallback');
+const convert = require('koa-connect');
 
 // Read in package.json:
 const packageJSON = JSON.parse(fs.readFileSync(path.join('.', 'package.json')));
@@ -46,7 +49,7 @@ const webpackConfig = {
     path: path.resolve('./build/'),
     filename: isProd ? 'bundle.[hash].js' : 'bundle.js',
     publicPath,
-    libraryTarget: isProd ? 'umd' : 'var'
+    libraryTarget: isProd ? 'umd' : 'var',
   },
   module: {
     rules: [
@@ -188,8 +191,8 @@ const webpackConfig = {
         collapseWhitespace: isProd,
         collapseInlineTagWhitespace: isProd,
         removeComments: isProd,
-        removeRedundantAttributes: isProd
-      }
+        removeRedundantAttributes: isProd,
+      },
     }),
     // Enable HMR:
     isProd ? noop() : new webpack.HotModuleReplacementPlugin(),
@@ -236,9 +239,9 @@ const webpackConfig = {
           },
         },
         sourceMap: false,
-        parallel: true
+        parallel: true,
       }),
-      new OptimizeCSSAssetsPlugin({})
+      new OptimizeCSSAssetsPlugin({}),
     ],
     // Load all CSS files into one file:
     splitChunks: {
@@ -247,10 +250,10 @@ const webpackConfig = {
           name: 'styles',
           test: /\.css$/,
           chunks: 'all',
-          enforce: true
-        }
-      }
-    }
+          enforce: true,
+        },
+      },
+    },
   },
   resolve: {
     extensions: [
@@ -261,10 +264,13 @@ const webpackConfig = {
       path.resolve('./node_modules'),
     ],
   },
-  devServer: {
-    contentBase: './app',
-    noInfo: false,
+  serve: {
+    content: './app',
     hot: true,
+    // For historyApiFallback:
+    add: (app) => {
+      app.use(convert(history({})));
+    },
   },
 };
 
