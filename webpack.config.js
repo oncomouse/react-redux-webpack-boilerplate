@@ -5,6 +5,9 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const noop = require('noop-webpack-plugin');
+// For historyApiFallback:
+const history = require('connect-history-api-fallback');
+const convert = require('koa-connect');
 
 // Read in package.json:
 const packageJSON = JSON.parse(fs.readFileSync(path.join('.', 'package.json')));
@@ -37,7 +40,7 @@ const webpackConfig = {
     path: path.resolve('./build/'),
     filename: isProd ? 'bundle.[hash].js' : 'bundle.js',
     publicPath,
-    libraryTarget: isProd ? 'umd' : 'var'
+    libraryTarget: isProd ? 'umd' : 'var',
   },
   module: {
     rules: [
@@ -65,8 +68,8 @@ const webpackConfig = {
         collapseWhitespace: isProd,
         collapseInlineTagWhitespace: isProd,
         removeComments: isProd,
-        removeRedundantAttributes: isProd
-      }
+        removeRedundantAttributes: isProd,
+      },
     }),
     // Enable HMR:
     isProd ? noop() : new webpack.HotModuleReplacementPlugin(),
@@ -99,7 +102,7 @@ const webpackConfig = {
           },
         },
         sourceMap: false,
-        parallel: true
+        parallel: true,
       }),
     ],
   },
@@ -112,10 +115,13 @@ const webpackConfig = {
       path.resolve('./node_modules'),
     ],
   },
-  devServer: {
-    contentBase: './app',
-    noInfo: false,
+  serve: {
+    content: './app',
     hot: true,
+    // For historyApiFallback:
+    add: (app) => {
+      app.use(convert(history({})));
+    },
   },
 };
 
