@@ -11,22 +11,11 @@
 		"react",
 		"stage-2"
 	],
+	"plugins": [
+		"emotion",
+		"tailcall-optimization"
+	],
 	"env": {
-		"development": {
-			"plugins": [
-				"styled-components",
-				"tailcall-optimization"
-			],	
-		},
-		"production": {
-			"plugins": [
-				["styled-components", {
-					"ssr": true
-				}],
-				"polished",
-				"tailcall-optimization"
-			],
-		},
 		"test": {
 			"presets": [
 				["env", {
@@ -38,7 +27,7 @@
 				}], "react", "stage-2"
 			],
 			"plugins": [
-				"styled-components",
+				"emotion",
 				"tailcall-optimization",
 				"add-module-exports"
 			]

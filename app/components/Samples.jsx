@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { map } from 'ramda';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 
 const List = styled.ul`
   list-style: none;

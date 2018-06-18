@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { color, space, borders, borderColor, borderRadius } from 'styled-system';
 import themeValueOrProp from '../utilities/themeValueOrProp';
 
