@@ -28,6 +28,7 @@
     "babel-loader": "^7.1.4",
     "babel-plugin-ramda": "^1.2.0",
     "babel-plugin-tailcall-optimization": "^1.0.11",
+    "babel-plugin-transform-react-constant-elements": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.5.0",

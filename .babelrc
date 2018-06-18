@@ -15,6 +15,11 @@
 		"tailcall-optimization"
 	],
 	"env": {
+		"production": {
+			"plugins": [
+				"transform-react-constant-elements"
+			]
+		},
 		"test": {
 			"presets": [
 				["env",{
@@ -23,11 +28,13 @@
 						"browsers": "> 5%"
 					},
 					"useBuiltIns": true
-				}]
-				, "react"
-				, "stage-2"
+				}],
+				"react",
+				"stage-2"
+			],
+			"plugins": [
+				"add-module-exports"
 			]
-			, "plugins": ["add-module-exports"]
 		}
 	}
 }
