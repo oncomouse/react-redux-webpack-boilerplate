@@ -71,8 +71,6 @@ const webpackConfig = {
         removeRedundantAttributes: isProd,
       },
     }),
-    // Enable HMR:
-    isProd ? noop() : new webpack.HotModuleReplacementPlugin(),
     // Define global variables:
     new webpack.DefinePlugin({
       'process.env': {
