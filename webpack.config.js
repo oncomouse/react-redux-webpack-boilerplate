@@ -194,8 +194,6 @@ const webpackConfig = {
         removeRedundantAttributes: isProd,
       },
     }),
-    // Enable HMR:
-    isProd ? noop() : new webpack.HotModuleReplacementPlugin(),
     // Configure SASS:
     new webpack.LoaderOptionsPlugin({
       test: /\.scss$/,
