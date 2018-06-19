@@ -8,7 +8,7 @@ For stylesheets, [node-sass](https://github.com/sass/node-sass) and a variety of
 
 Testing is supported through the [Mocha](https://mochajs.org/) framework (with help from [zinserjan/mocha-webpack](https://github.com/zinserjan/mocha-webpack/)). [Chai](http://chaijs.com/) (for assertions), [Sinon](http://sinonjs.org/) (for spies, mocks, and stubs), and [Enzyme](http://airbnb.io/enzyme/) (for React testing) are all also provided. Check the `.spec.js` files in `components/`, 	`containers/`, and `reducers/` to see some examples to get started writing unit tests.
 
-Coverage testing is supplied by [Istanbul](https://istanbul.js.org/). Code quality is checked by [ESLint](https://eslint.org/).
+Coverage testing is supplied by [Istanbul](https://istanbul.js.org/). Code quality is checked by [ESLint](https://eslint.org/) and [stylelint](https://stylelint.io/).
 
 ## Installation
 
