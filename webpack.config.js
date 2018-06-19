@@ -273,6 +273,10 @@ const webpackConfig = {
       path.resolve('./app/'),
       path.resolve('./node_modules'),
     ].concat(isTest ? [path.resolve('./test/')] : []),
+    alias: {
+      APP: path.resolve('./app/'),
+      TEST: path.resolve('./test/'),
+    },
   },
   serve: {
     content: './app',

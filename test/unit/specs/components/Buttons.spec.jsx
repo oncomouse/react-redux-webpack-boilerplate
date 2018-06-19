@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
-import Button from './Button';
+import Button from 'APP/components/Button';
 
 const NUMBER_OF_BUTTONS = 2;
 

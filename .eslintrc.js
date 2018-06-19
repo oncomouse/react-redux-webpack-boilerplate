@@ -21,14 +21,8 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      node: {
-        paths: [
-          './app/',
-        ],
-        moduleDirectory: [
-          './node_modules/',
-          './test/',
-        ],
+      webpack: {
+        config: 'webpack.config.js',
       },
     },
   },

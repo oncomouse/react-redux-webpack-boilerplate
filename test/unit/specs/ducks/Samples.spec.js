@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import fetchMock from 'fetch-mock';
-import post from 'fixtures/post.json';
-import reducer, { addSampleAction, resetAction } from './Samples';
-import { API_URL } from '../api/config';
+import post from 'TEST/fixtures/post.json';
+import reducer, { addSampleAction, resetAction } from 'APP/ducks/Samples';
+import { API_URL } from 'APP/api/config';
 
 describe('ducks/Samples', () => {
   const initialState = [];

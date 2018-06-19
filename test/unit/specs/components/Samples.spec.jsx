@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import { always, identity, times } from 'ramda';
-import Samples from './Samples';
+import Samples from 'APP/components/Samples';
 
 const SAMPLE_LENGTH = 36;
 const STRING_LENGTH = 8;
