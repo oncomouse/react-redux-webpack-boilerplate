@@ -4,3 +4,11 @@ $base-font: $sans-serif;
 $header-font: $serif;
 $buttonBackgroundColor: #673AB7;
 $buttonForegroundColor: #fff;
+
+@for $i from 1 through 10 {
+	
+  .zIndex#{$i},
+  %zIndex#{$i} {
+    z-index: 10 * ($i - 1);
+  }
+}

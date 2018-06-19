@@ -7,10 +7,10 @@ import { Provider } from 'react-redux';
 import fetchMock from 'fetch-mock';
 import thunk from 'redux-thunk';
 import post from 'TEST/fixtures/post.json';
-import App from 'APP/containers/App';
+import Home from 'APP/pages/Home';
 import { API_URL } from 'APP/api/config';
 
-describe('<App/>', () => {
+describe('<Home/>', () => {
   let store;
   let mockStore;
   let wrapper;
@@ -22,19 +22,19 @@ describe('<App/>', () => {
     store = mockStore({
       Samples: [],
     });
-    sinon.spy(App.prototype, 'componentDidMount');
-    wrapper = mount(<Provider store={store}><App /></Provider>);
+    sinon.spy(Home.prototype, 'componentDidMount');
+    wrapper = mount(<Provider store={store}><Home /></Provider>);
   });
   afterEach(() => {
     fetchMock.reset();
-    App.prototype.componentDidMount.restore();
+    Home.prototype.componentDidMount.restore();
   });
   after(() => {
     fetchMock.restore();
   });
   // Unit Tests:
   it('should render without crashing', () => {
-    expect(App.prototype.componentDidMount).to.be.calledOnce;
+    expect(Home.prototype.componentDidMount).to.be.calledOnce;
   });
   it('should render two buttons', () => {
     expect(wrapper.find('Button')).to.have.length(2);

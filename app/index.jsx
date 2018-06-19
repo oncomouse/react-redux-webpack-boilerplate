@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import configureStore from './store/configureStore';
-import App from './containers/App';
+import Router from './router';
 import './stylesheets/global.scss';
 
 const { store, persistor } = configureStore();
@@ -23,9 +23,9 @@ const render = (Component) => {
     , document.getElementById('root'),
   );
 };
-render(App);
+render(Router);
 if (module.hot) {
-  module.hot.accept(['containers/App'], () => {
-    import('containers/App').then(x => render(x.default));
+  module.hot.accept(['router'], () => {
+    import('router').then(x => render(x.default));
   });
 }

@@ -13,7 +13,7 @@ const mapDispatchToProps = dispatch => ({
   resetSamples: () => dispatch(resetAction()),
 });
 
-class App extends React.Component {
+class Home extends React.Component {
     static propTypes = {
       samples: PropTypes.arrayOf(PropTypes.string).isRequired,
       addSample: PropTypes.func.isRequired,
@@ -38,4 +38,4 @@ class App extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

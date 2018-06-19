@@ -1,0 +1,14 @@
+@import "../variables";
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #FFF;
+  text-align: center;
+  padding-top: 40vh;
+
+  @extend %zIndex10;
+}
