@@ -1,4 +1,4 @@
-# react-redux-webpack-starter
+# react-redux-webpack-boilerplate
 
 This is my starter app for [React](https://reactjs.org/), [Redux](https://redux.js.org/), and [Webpack](https://webpack.js.org/). It includes [redux-thunk](https://github.com/reduxjs/redux-thunk) for side effects, including calls to APIs. It also includes support for a [persistent](https://github.com/rt2zz/redux-persist) store. The development server supports hot reloading.
 
