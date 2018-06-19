@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const noop = require('noop-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
 // For historyApiFallback:
 const history = require('connect-history-api-fallback');
 const convert = require('koa-connect');
@@ -16,6 +17,7 @@ const packageJSON = JSON.parse(fs.readFileSync(path.join('.', 'package.json')));
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
+const isTest = nodeEnv === 'test';
 
 // Extract PUBLIC_URL from either CLI or package.json:
 const PUBLIC_URL = process.env.PUBLIC_URL || (
@@ -53,6 +55,16 @@ const webpackConfig = {
   },
   module: {
     rules: [
+      isTest ? {
+        test: /\.(js|jsx)$/,
+        include: path.resolve('./app'),
+        use: {
+          loader: 'istanbul-instrumenter-loader',
+          query: {
+            esModules: true,
+          },
+        },
+      } : {},
       {
         test: /\.(jsx|js)$/,
         exclude: /(node_modules|bower_components)/,
@@ -260,7 +272,7 @@ const webpackConfig = {
     modules: [
       path.resolve('./app/'),
       path.resolve('./node_modules'),
-    ],
+    ].concat(isTest ? [path.resolve('./test/')] : []),
   },
   serve: {
     content: './app',
@@ -270,6 +282,10 @@ const webpackConfig = {
       app.use(convert(history({})));
     },
   },
+  externals: isTest ? [nodeExternals({
+    whitelist: [],
+  })] : [],
+  target: isTest ? 'node' : 'web',
 };
 
 module.exports = webpackConfig;

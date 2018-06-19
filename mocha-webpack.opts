@@ -1,4 +1,4 @@
---webpack-config webpack.config.test.js
-test.prepare.js
-app/**/*.spec.js
+--webpack-config webpack.config.js
+--require test.prepare.js
 app/**/*.spec.jsx
+app/**/*.spec.js
