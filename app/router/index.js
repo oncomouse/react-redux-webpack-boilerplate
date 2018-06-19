@@ -16,7 +16,7 @@ import Loading from '../components/utilities/Loading';
 // new Loadable<RouteName> component in the same way it's done here.
 //
 // IMPORTANT: Do not forget the {...props} destructuring or your route won't
-// receive props (which is useful if you are using react-router's wildcard
+// receive props (which is useful if you are using react-router's wildcardr
 // routes to extract things from the matched path).
 const LoadableHome = Loadable({
   loader: () => import('../pages/Home'),
