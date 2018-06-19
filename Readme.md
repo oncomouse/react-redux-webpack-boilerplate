@@ -47,13 +47,15 @@ Also: `env NODE_ENV=production webpack --json > stats.json` and upload to [Webpa
 
 Some notes on the thought process behind this boilerplate:
 
-### Naming
+### File Extensions for JSX Files
 
-**File Extensions for JSX Files**: Though this repo uses the [airbnb/javascript](https://github.com/airbnb/javascript) style guide, the rule regarding files containing JSX having to have the `.jsx` extension is loosened (see [discussion of this issue here](https://github.com/airbnb/javascript)). I do, however, continue to use `.jsx` extensions for components and pages, as the purpose of those files is display. Things like unit tests, the router, and the project's main file are all `.js` extensions to indicate their primary function, which is not display. So, to summarize, *use `.jsx` for files in `components/` and `pages/`; use `.js` everywhere else*.
+Though this repo uses the [airbnb/javascript](https://github.com/airbnb/javascript) style guide, the rule regarding files containing JSX having to have the `.jsx` extension is loosened (see [discussion of this issue here](https://github.com/airbnb/javascript)). I do, however, continue to use `.jsx` extensions for components and pages, as the purpose of those files is display. Things like unit tests, the router, and the project's main file are all `.js` extensions to indicate their primary function, which is not display. So, to summarize, *use `.jsx` for files in `components/` and `pages/`; use `.js` everywhere else*.
 
-**Directory Aliases For Tests**: `webpack.config.js` aliases `app/` as `APP` and `test/` as `TEST`, so that you could type:
+### Directory Aliases For Tests
 
-~~~javascript
+`webpack.config.js` aliases `app/` as `APP` and `test/` as `TEST`, so that you could type:
+
+~~~
 import Home from 'APP/pages/Home';
 ~~~
 
