@@ -20,7 +20,6 @@ There are a number of scripts already available for supporting development:
 
 * **Start Development Server** – `npm run start`
 * **Build Production Code** – `npm run build`
-* **Visualize Bundle Size** – `npm run analyze`
 * **Unit Testing** – `npm run mocha`
 	* `npm run mocha:watch` to live update unit tests
 * **Coverage Testing** – `npm run cover`
