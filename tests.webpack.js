@@ -12,3 +12,6 @@ chai.use(chaiAsPromised);
 
 // Configure Enzyme for React 16:
 Enzyme.configure({ adapter: new Adapter() });
+
+const context = require.context('./test', true, /\.spec\.js$/);
+context.keys().forEach(context);

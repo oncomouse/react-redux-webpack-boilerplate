@@ -297,10 +297,10 @@ const webpackConfig = {
       app.use(convert(history({})));
     },
   },
-  externals: isTest ? [nodeExternals({
+  /* externals: isTest ? [nodeExternals({
     whitelist: [],
   })] : [],
-  target: isTest ? 'node' : 'web',
+  target: isTest ? 'node' : 'web', */
 };
 
 module.exports = webpackConfig;
