@@ -114,6 +114,10 @@
       "**/*.spec.jsx",
       "build"
     ],
+    "extension": [
+      ".jsx",
+      ".js"
+    ],
     "instrument": false,
     "sourceMap": false
   }
