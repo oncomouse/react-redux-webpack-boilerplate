@@ -24,13 +24,18 @@ describe('ducks/Samples', () => {
   it('should return initialState', () => {
     expect(reducer(undefined, {})).to.deep.equal(initialState);
   });
-  it('should handle a sampleAction', (done) => {
+  it('should dispatch post.title when  a sampleAction', (done) => {
     addSampleAction()(store.dispatch, store.getState).then((action) => {
+      // Test dispatching:
+      expect(store.dispatch).to.be.calledOnce;
+      expect(store.dispatch.getCall(0).args[0].payload.sample).to.equal(post.title);
+
+      // Test reducing:
       const result = reducer(initialState, action);
       expect(result).to.be.an('array');
       expect(result).to.have.length(1);
       expect(result[0]).to.be.a('string');
-      expect(store.dispatch).to.be.calledOnce;
+      expect(result[0]).to.equal(post.title);
       done();
     }).catch(err => done(err));
   });
