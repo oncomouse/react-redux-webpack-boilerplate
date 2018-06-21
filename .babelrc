@@ -19,6 +19,16 @@
 			"plugins": [
 				"transform-react-constant-elements"
 			]
+		},
+		"test": {
+			"plugins": [
+				["istanbul", {
+					"exclude": [
+						"**/*.spec.js",
+						"tests.webpack.js"
+					]
+				}]
+			]
 		}
 	}
 }
