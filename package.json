@@ -84,8 +84,6 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.9.1",
     "fetch-mock": "^6.4.2",
-    "jsdom": "^11.11.0",
-    "jsdom-global": "^3.0.2",
     "karma": "^2.0.3",
     "karma-chrome-launcher": "^2.2.0",
     "karma-cli": "^1.0.1",
