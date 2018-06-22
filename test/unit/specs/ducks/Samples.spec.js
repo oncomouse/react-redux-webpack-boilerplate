@@ -56,12 +56,13 @@ describe('ducks/Samples', () => {
       .catch(done);
   });
   it('should reduce to initialState w/ a resetAction', () => {
-    const result = reducer(times(always('gibberish'), 10), resetAction());
+    const testState = times(always('gibberish'), 10);
+    const result = reducer(testState, resetAction());
     expect(result).to.deep.equal(initialState);
   });
   it('should not change state w/ addSampleAction & a 404 Error', (done) => {
     fetchMock.get(new RegExp(`${API_URL}/posts/[0-9]+.*$`), 404, { overwriteRoutes: true });
-    const testState = ['foo'];
+    const testState = times(always('gibberish'), 10);
     addSampleAction()(store.dispatch, store.getState).then((action) => {
       const result = reducer(testState, action);
       expect(result).to.deep.equal(testState);
