@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
-import { always, identity, times } from 'ramda';
+import { identity, times } from 'ramda';
 import Samples from 'APP/components/Samples';
 
 const SAMPLE_LENGTH = 36;
@@ -31,18 +31,13 @@ describe('<Samples/>', () => {
     expect(wrapper.childAt(0).name()).to.equal('ul');
   });
   it('should render an object of random strings as <li>', () => {
-    const samples = [];
-    times(() => {
-      const r = randomString();
-      samples.push(r);
-    }, randomInteger(MIN_SAMPLES, MAX_SAMPLES));
+    const samples = times(randomString, randomInteger(MIN_SAMPLES, MAX_SAMPLES));
     wrapper.setProps({ samples });
     expect(wrapper.find('li')).to.have.length(Object.keys(samples).length);
   });
   it('should not error if all strings are the same', () => {
     sinon.stub(console, 'error');
-    const r = randomString();
-    const samples = times(always(r), randomInteger(MIN_SAMPLES, MAX_SAMPLES));
+    const samples = times(randomString, randomInteger(MIN_SAMPLES, MAX_SAMPLES));
     wrapper.setProps({ samples });
     expect(console.error).to.have.callCount(0); // eslint-disable-line no-console
     console.error.restore(); // eslint-disable-line no-console
